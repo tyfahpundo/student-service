@@ -4,6 +4,7 @@ public class CreateStudentRequest {
     private String firstName;
     private String lastName;
     private String email;
+    private long addressId;
 
     public String getFirstName() {
         return firstName;
@@ -27,5 +28,13 @@ public class CreateStudentRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
     }
 }
