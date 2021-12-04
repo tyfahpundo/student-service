@@ -8,7 +8,11 @@ import zw.co.afrosoft.studentservice.domain.Student;
 import zw.co.afrosoft.studentservice.domain.request.CreateStudentRequest;
 import zw.co.afrosoft.studentservice.domain.response.AddressResponse;
 import zw.co.afrosoft.studentservice.domain.response.StudentResponse;
+import zw.co.afrosoft.studentservice.feignclients.AddressFeignClient;
 import zw.co.afrosoft.studentservice.persistence.StudentRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService{
@@ -17,6 +21,8 @@ public class StudentServiceImpl implements StudentService{
 
     @Autowired
     private WebClient webClient;
+    @Autowired
+    private AddressFeignClient addressFeignClient;
 
     @Override
     public StudentResponse createStudent(CreateStudentRequest createStudentRequest) {
@@ -29,7 +35,7 @@ public class StudentServiceImpl implements StudentService{
         student = repo.save(student);
 
         StudentResponse studentResponse = new StudentResponse(student);
-        studentResponse.getAddressResponse(getAddressById(student.getAddressId()));
+        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
         return studentResponse;
     }
 
@@ -37,15 +43,31 @@ public class StudentServiceImpl implements StudentService{
     public StudentResponse getById(Long id) {
         Student student = repo.findById(id).get();
         StudentResponse studentResponse = new StudentResponse(student);
-        studentResponse.getAddressResponse(getAddressById(student.getAddressId()));
-        return new StudentResponse(student);
+
+        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
+        return studentResponse;
+    }
+
+    @Override
+    public List<StudentResponse> getAllStudents() {
+        List<StudentResponse> responseList = new ArrayList<>();
+        List<Student> studentList = repo.findAll();
+
+        studentList
+                .stream()
+                .forEach(student-> responseList.add(new StudentResponse(student)));
+
+        return responseList;
     }
 
     public AddressResponse getAddressById(Long addressId){
         Mono<AddressResponse> addressResponse =
-                webClient.get().uri("/getById" + addressId)
+                webClient.get().uri("/getById/" + addressId)
                 .retrieve().bodyToMono(AddressResponse.class);
 
         return addressResponse.block();
     }
+
+
+
 }

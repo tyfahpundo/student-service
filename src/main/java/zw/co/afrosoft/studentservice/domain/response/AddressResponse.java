@@ -28,4 +28,13 @@ public class AddressResponse {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public AddressResponse(Long addressId, String street, String city) {
+        this.addressId = addressId;
+        this.street = street;
+        this.city = city;
+    }
+
+    public AddressResponse() {
+    }
 }

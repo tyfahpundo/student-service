@@ -15,6 +15,7 @@
     <description>student-service</description>
     <properties>
         <java.version>11</java.version>
+        <spring.cloud.version>3.0.1</spring.cloud.version>
     </properties>
     <dependencies>
         <dependency>
@@ -37,6 +38,12 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
             <version>2.5.5</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>${spring.cloud.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +57,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${parent.version}</version>
             </plugin>
         </plugins>
     </build>

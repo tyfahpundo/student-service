@@ -7,7 +7,6 @@ public class StudentResponse {
     private String firstName;
     private String lastName;
     private String email;
-
     private AddressResponse addressResponse;
 
     public StudentResponse(Student student){
@@ -15,6 +14,10 @@ public class StudentResponse {
         this.firstName = student.getFirstName();
         this.lastName = student.getLastName();
         this.email = student.getEmail();
+    }
+
+    public StudentResponse() {
+
     }
 
     public Long getId() {
@@ -49,7 +52,7 @@ public class StudentResponse {
         this.email = email;
     }
 
-    public AddressResponse getAddressResponse(AddressResponse addressById) {
+    public AddressResponse getAddressResponse() {
         return addressResponse;
     }
 
