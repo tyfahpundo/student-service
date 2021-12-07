@@ -35,7 +35,9 @@ public class StudentServiceImpl implements StudentService{
         student = repo.save(student);
 
         StudentResponse studentResponse = new StudentResponse(student);
-        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
+//        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
+
+        studentResponse.setAddressResponse(addressFeignClient.getById(student.getAddressId()));
         return studentResponse;
     }
 
@@ -44,7 +46,8 @@ public class StudentServiceImpl implements StudentService{
         Student student = repo.findById(id).get();
         StudentResponse studentResponse = new StudentResponse(student);
 
-        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
+//        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
+        studentResponse.setAddressResponse(addressFeignClient.getById(student.getAddressId()));
         return studentResponse;
     }
 
