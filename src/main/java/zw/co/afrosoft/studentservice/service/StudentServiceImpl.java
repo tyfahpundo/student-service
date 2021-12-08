@@ -20,8 +20,6 @@ public class StudentServiceImpl implements StudentService{
     private StudentRepository repo;
 
     @Autowired
-    private WebClient webClient;
-    @Autowired
     private AddressFeignClient addressFeignClient;
 
     @Override
@@ -47,7 +45,8 @@ public class StudentServiceImpl implements StudentService{
         StudentResponse studentResponse = new StudentResponse(student);
 
 //        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
-        studentResponse.setAddressResponse(addressFeignClient.getById(student.getAddressId()));
+        AddressResponse address = addressFeignClient.getById(student.getAddressId());
+        studentResponse.setAddressResponse(address);
         return studentResponse;
     }
 
@@ -61,14 +60,6 @@ public class StudentServiceImpl implements StudentService{
                 .forEach(student-> responseList.add(new StudentResponse(student)));
 
         return responseList;
-    }
-
-    public AddressResponse getAddressById(Long addressId){
-        Mono<AddressResponse> addressResponse =
-                webClient.get().uri("/getById/" + addressId)
-                .retrieve().bodyToMono(AddressResponse.class);
-
-        return addressResponse.block();
     }
 
 
