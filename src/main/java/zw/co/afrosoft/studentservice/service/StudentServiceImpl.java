@@ -2,11 +2,8 @@ package zw.co.afrosoft.studentservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import zw.co.afrosoft.studentservice.domain.Student;
 import zw.co.afrosoft.studentservice.domain.request.CreateStudentRequest;
-import zw.co.afrosoft.studentservice.domain.response.AddressResponse;
 import zw.co.afrosoft.studentservice.domain.response.StudentResponse;
 import zw.co.afrosoft.studentservice.feignclients.AddressFeignClient;
 import zw.co.afrosoft.studentservice.persistence.StudentRepository;
@@ -21,6 +18,8 @@ public class StudentServiceImpl implements StudentService{
 
     @Autowired
     private AddressFeignClient addressFeignClient;
+    @Autowired
+    private CommonService commonService;
 
     @Override
     public StudentResponse createStudent(CreateStudentRequest createStudentRequest) {
@@ -33,9 +32,8 @@ public class StudentServiceImpl implements StudentService{
         student = repo.save(student);
 
         StudentResponse studentResponse = new StudentResponse(student);
-//        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
 
-        studentResponse.setAddressResponse(addressFeignClient.getById(student.getAddressId()));
+        studentResponse.setAddressResponse(commonService.getAddressById(student.getAddressId()));
         return studentResponse;
     }
 
@@ -43,10 +41,7 @@ public class StudentServiceImpl implements StudentService{
     public StudentResponse getById(Long id) {
         Student student = repo.findById(id).get();
         StudentResponse studentResponse = new StudentResponse(student);
-
-//        studentResponse.setAddressResponse(getAddressById(student.getAddressId()));
-        AddressResponse address = addressFeignClient.getById(student.getAddressId());
-        studentResponse.setAddressResponse(address);
+        studentResponse.setAddressResponse(commonService.getAddressById(student.getAddressId()));
         return studentResponse;
     }
 
@@ -61,7 +56,4 @@ public class StudentServiceImpl implements StudentService{
 
         return responseList;
     }
-
-
-
 }
