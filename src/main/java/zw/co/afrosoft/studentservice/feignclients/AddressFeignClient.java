@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import zw.co.afrosoft.studentservice.domain.response.AddressResponse;
 
-@FeignClient(value = "address-service",path = "/api/address")
-public interface AddressFeignClient {
+@FeignClient(value = "api-gateway")
+public interface AddressFeignClient { //This is no longer specific to the address service
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("address-service/api/address/getById/{id}")
     AddressResponse getById(@PathVariable Long id);
 }
